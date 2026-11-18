@@ -8,3 +8,13 @@ class JobStatus(str, Enum):
     running = 'running'
     completed = 'completed'
     failed = 'failed'
+class ReleaseScope(str, Enum):
+    overall = 'overall'
+    by_shift = 'by_shift'
+class ReleaseStatus(str, Enum):
+    pending = 'pending'
+    delivered = 'delivered'
+    rejected = 'rejected'
+class DeliveryStatus(str, Enum):
+    publishing = 'publishing'
+    delivered = 'delivered'

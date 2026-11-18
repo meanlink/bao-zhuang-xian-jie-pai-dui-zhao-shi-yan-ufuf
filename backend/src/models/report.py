@@ -10,6 +10,9 @@ class Report(Base):
     interval_seconds: Mapped[int]
     next_run: Mapped[float] = mapped_column(Double)
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    scope: Mapped[str] = mapped_column(String(20), default='overall')
+    last_status: Mapped[str] = mapped_column(String(20), default='pending')
+    last_reason: Mapped[str] = mapped_column(String(500), default='')
 class Delivery(Base):
     __tablename__ = 'deliveries'
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -18,3 +21,5 @@ class Delivery(Base):
     checksum: Mapped[str] = mapped_column(String(64))
     filename: Mapped[str] = mapped_column(String(160))
     destination: Mapped[str] = mapped_column(String(120))
+    status: Mapped[str] = mapped_column(String(20), default='delivered')
+    scope: Mapped[str] = mapped_column(String(20), default='overall')

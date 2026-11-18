@@ -8,4 +8,5 @@ class Dataset(Base):
     source: Mapped[str] = mapped_column(String(200), default='manual.json')
     records: Mapped[list] = mapped_column(JSON)
     checksum: Mapped[str] = mapped_column(String(64))
+    released_scope: Mapped[str | None] = mapped_column(String(20), nullable=True)
     created_at: Mapped[float] = mapped_column(Double)

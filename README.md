@@ -33,7 +33,8 @@ Role 枚举：admin/analyst/viewer；JobStatus：queued/running/completed/failed
 
 ## 环境变量与 Docker
 COMPOSE_PROJECT_NAME=pack-welch；FRONTEND_PORT=18203；BACKEND_PORT=19203；DB_PORT=17703；DB_PASSWORD、JWT_SECRET 见 .env.example；SEED_DEMO 默认 true。共享命名产物卷供后端下载与 worker 写入，数据库/Redis 各持久卷。
-恰好五服务均有健康检查。Redis 队列加 SQL 排队状态兜底；worker 按 next_run 生成本地收件箱文件。周期 60 秒至 30 天。分发结果为批准分析的固定快照；若需新数据重新计算并建立新计划。当前不连接邮件或企业聊天。
+恰好五服务均有健康检查。Redis 队列加 SQL 排队状态兜底；worker 按 next_run 生成本地收件箱文件。周期 60 秒至 30 天。分发内容按批准分析的参数与批次数据在外发口径下生成，批次数据不可变故归档可复算核对；若需新数据重新计算并建立新计划。当前不连接邮件或企业聊天。
+外发防倒推：同一批次只放行一种口径（总体或分班全套），防止代工方用总体加单班倒推未公开班次。首份可下载简报锁定全批口径，停用计划不解锁；每个公开组至少 5 段，分班任一组不足即拒发并提示改走总体或暂缓；发布中断后恢复原申请，重试不新增归档；CSV/JSON 附件均按锁定口径生成，内部分析不受影响。分发页面展示待发布、可下载与拒发原因。
 错误响应、请求编号、Redis 每 IP 每分钟 240 次限流、JWT 和数据库操作审计。演示密钥与密码仅供本机模拟；生产部署前配置独立密钥与账号。
 
 ## 数据与验收

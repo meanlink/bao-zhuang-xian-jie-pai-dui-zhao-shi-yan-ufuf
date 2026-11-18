@@ -31,6 +31,7 @@ def deliveries(db=Depends(get_db),u=Depends(current_user)):
 def download(id:int,format:str='csv',db=Depends(get_db),u=Depends(current_user)):
     d=db.get(Delivery,id)
     if not d:raise HTTPException(404,'归档不存在')
+    if d.status!='delivered':raise HTTPException(409,'归档正在生成中，稍后重试')
     if format not in ('csv','json'):raise HTTPException(422,'支持 CSV 或 JSON')
     filename=d.filename+('.json' if format=='json' else '')
     p=os.path.join(ARTIFACT_DIR,filename)
